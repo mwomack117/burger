@@ -1,0 +1,76 @@
+<h1>Eat-Da-Burger!</h1>
+
+
+<h4>Add A Burger to the Menu</h4>
+
+<div class="row">
+  <form id="addburger" class="col s6 push-s3">
+
+    <i class="material-icons prefix"></i>
+    <textarea type="text" id="burger" class="materialize-textarea" name="name"></textarea>
+    <button type="submit">Add Burger!</button>
+
+  </form>
+
+</div>
+
+<main>
+  <div class="container">
+    <div class="row">
+      <div class="col m6">
+        <ul>
+          {{#each burgers}}
+          <li>
+            <p>
+              {{this.id}}. {{this.burger_name}}
+
+              <button data-burgerid="{{this.id}}" class="devour">Devour Burger!</button>
+            </p>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+
+    <div class="col m6">
+
+    </div>
+  </div>
+</main>
+
+
+
+
+
+<script>
+  // click event that takes id
+  // ajax with id to update burger = devoured
+
+  // Add a burger 
+  $("#addburger").on("submit", function (event) {
+    event.preventDefault();
+
+    var newBurger = {
+      burger_name: $("#burger").val().trim()
+    };
+
+    $.ajax("/api/burgers", {
+      type: "POST",
+      data: newBurger
+    }).then(
+      function () {
+        console.log("new burger added");
+        location.reload();
+      }
+    )
+  })
+
+  // Devour a burger "PUT"
+  $(".devour").on("click", function () {
+    event.preventDefault();
+
+    var id = $(this).data("id");
+  })
+
+
+</script>
