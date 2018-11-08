@@ -1,13 +1,12 @@
 <h1>Eat-Da-Burger!</h1>
 
 
-<h4>Add A Burger to the Menu</h4>
-
 <div class="row">
+  <h4>Add A Burger to the Menu</h4>
   <form id="addburger" class="col s6 push-s3">
 
     <i class="material-icons prefix"></i>
-    <textarea type="text" id="burger" class="materialize-textarea" name="name"></textarea>
+    <textarea type="text" id="burger" class="materialize-textarea" name="name" placeholder="Burger Wish List"></textarea>
     <button type="submit">Add Burger!</button>
 
   </form>
@@ -15,27 +14,41 @@
 </div>
 
 <main>
+
   <div class="container">
     <div class="row">
       <div class="col m6">
         <ul>
           {{#each burgers}}
+          {{#unless devoured}}
+          <li>
+            <p>
+              {{id}}. {{burger_name}}
+
+              <button data-id="{{this.id}}" class="devour" data-isdevoured="{{devoure}}">Devour Burger!</button>
+            </p>
+          </li>
+          {{/unless}}
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class="col m6">
+        <ul>
+          {{#each burgers}}
+          {{#if devoured}}
           <li>
             <p>
               {{this.id}}. {{this.burger_name}}
-
-              <button data-burgerid="{{this.id}}" class="devour">Devour Burger!</button>
             </p>
           </li>
+          {{/if}}
           {{/each}}
         </ul>
       </div>
     </div>
-
-    <div class="col m6">
-
-    </div>
   </div>
+
 </main>
 
 
@@ -45,31 +58,48 @@
 <script>
   // click event that takes id
   // ajax with id to update burger = devoured
+  $(function () {
+    // Add a burger 
+    $("#addburger").on("submit", function (event) {
+      event.preventDefault();
 
-  // Add a burger 
-  $("#addburger").on("submit", function (event) {
-    event.preventDefault();
+      var newBurger = {
+        burger_name: $("#burger").val().trim()
+      };
 
-    var newBurger = {
-      burger_name: $("#burger").val().trim()
-    };
+      $.ajax("/api/burgers", {
+        type: "POST",
+        data: newBurger
+      }).then(
+        function () {
+          console.log("new burger added");
+          location.reload();
+        }
+      )
+    })
 
-    $.ajax("/api/burgers", {
-      type: "POST",
-      data: newBurger
-    }).then(
-      function () {
-        console.log("new burger added");
-        location.reload();
+    // Devour a burger "PUT"
+    $(".devour").on("click", function () {
+      event.preventDefault();
+
+      var id = $(this).data("id");
+  
+
+      var eaten = {
+        devoured: true
       }
-    )
-  })
 
-  // Devour a burger "PUT"
-  $(".devour").on("click", function () {
-    event.preventDefault();
+      $.ajax("/api/burgers/" + id, {
+        type: "PUT",
+        data: eaten
+      }).then(
+        function () {
+          console.log("Burger Devoured", devoured);
+          location.reload();
+        }
+      )
+    })
 
-    var id = $(this).data("id");
   })
 
 
