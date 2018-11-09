@@ -2,49 +2,53 @@
 
 
 <div class="row">
-  <h4>Add A Burger to the Menu</h4>
+  <h4 class="subtitle">Add A Burger to the Menu</h4>
   <form id="addburger" class="col s6 push-s3">
 
-    <i class="material-icons prefix"></i>
-    <textarea type="text" id="burger" class="materialize-textarea" name="name" placeholder="Burger Wish List"></textarea>
+    <textarea type="text" id="burger" class="materialize-textarea" name="name" placeholder="Type burger name here"></textarea>
     <button type="submit">Add Burger!</button>
 
   </form>
 
 </div>
 
+<br>
+
 <main>
 
   <div class="container">
     <div class="row">
       <div class="col m6">
-        <ul>
+        <h4>Burger Wish List</h4>
+        <ol>
           {{#each burgers}}
           {{#unless devoured}}
           <li>
             <p>
-              {{id}}. {{burger_name}}
+              {{burger_name}}
 
-              <button data-id="{{this.id}}" class="devour" data-isdevoured="{{devoure}}">Devour Burger!</button>
+              <button data-id="{{this.id}}" id="devour" class="waves-effect waves-light btn-small">Devour Burger!</button>
             </p>
           </li>
           {{/unless}}
           {{/each}}
-        </ul>
+        </ol>
       </div>
 
       <div class="col m6">
-        <ul>
+        <h4>Burgers Devoured</h4>
+        <ol>
           {{#each burgers}}
           {{#if devoured}}
           <li>
             <p>
-              {{this.id}}. {{this.burger_name}}
+               {{this.burger_name}}
             </p>
           </li>
           {{/if}}
           {{/each}}
-        </ul>
+        </ol>
+
       </div>
     </div>
   </div>
@@ -56,8 +60,7 @@
 
 
 <script>
-  // click event that takes id
-  // ajax with id to update burger = devoured
+
   $(function () {
     // Add a burger 
     $("#addburger").on("submit", function (event) {
@@ -79,11 +82,11 @@
     })
 
     // Devour a burger "PUT"
-    $(".devour").on("click", function () {
+    $("#devour").on("click", function () {
       event.preventDefault();
 
       var id = $(this).data("id");
-  
+
 
       var eaten = {
         devoured: true
@@ -94,7 +97,7 @@
         data: eaten
       }).then(
         function () {
-          console.log("Burger Devoured", devoured);
+          console.log("Burger Devoured");
           location.reload();
         }
       )

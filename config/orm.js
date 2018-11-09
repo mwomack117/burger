@@ -42,16 +42,24 @@ var orm = {
       cb(result);
     })
   },
-  updateOne: function (objColVals, condition, cb) {
-    var queryString = "UPDATE burgers SET " + objToSql(objColVals)  + " WHERE " + condition;
-    console.log(queryString);
-
-    connection.query(queryString, function (err, result) {
+  updateOne: function (condition, cb) {
+    var queryString = "UPDATE ?? SET ?? = ? WHERE " + condition;
+    connection.query(queryString, ["burgers", "devoured", true], function (err, result) {
       if (err) {
         throw err;
       }
       cb(result);
     })
+
+    // var queryString = "UPDATE burgers SET devoured = true WHERE " + condition;
+    // console.log(queryString);
+    // // objToSql(objColVals)
+    // connection.query(queryString, function (err, result) {
+    //   if (err) {
+    //     throw err;
+    //   }
+    //   cb(result);
+    // })
   }
 
 };
