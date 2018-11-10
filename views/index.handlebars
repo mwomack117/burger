@@ -27,7 +27,7 @@
             <p>
               {{burger_name}}
 
-              <button data-id="{{this.id}}" id="devour" class="waves-effect waves-light btn-small">Devour Burger!</button>
+              <button data-id="{{this.id}}" class="devour waves-effect waves-light btn-small">Devour Burger!</button>
             </p>
           </li>
           {{/unless}}
@@ -82,15 +82,15 @@
     })
 
     // Devour a burger "PUT"
-    $("#devour").on("click", function () {
+    $(".devour").on("click", function () {
       event.preventDefault();
 
       var id = $(this).data("id");
-
+      console.log(id);
 
       var eaten = {
         devoured: true
-      }
+      };
 
       $.ajax("/api/burgers/" + id, {
         type: "PUT",
